@@ -7,6 +7,7 @@ VERSION ?= 0.7.1
 DOCKER_IMAGE_NAME ?= docker.io/kubegreen/kube-green
 OS=$(shell go env GOOS)
 ARCH=$(shell go env GOARCH)
+TEST_PATH         := ./...
 
 # CHANNELS define the bundle channels used in the bundle.
 # Add a new line here if you would like to change its default config. (E.g CHANNELS = "preview,fast,stable")
@@ -125,7 +126,7 @@ lint-config: golangci-lint ## Verify golangci-lint linter configuration
 .PHONY: test
 test: manifests generate fmt vet gotestsum envtest ## Run tests.
 	@echo "Running tests with kubernetes version $(KIND_K8S_VERSION)..."
-	KIND_K8S_VERSION=$(KIND_K8S_VERSION) $(GOTESTSUM) -- $(GO_TEST_ARGS) -race ./...
+	KIND_K8S_VERSION=$(KIND_K8S_VERSION) $(GOTESTSUM) -- $(GO_TEST_ARGS) -race $(TEST_PATH)
 
 .PHONY: coverage
 coverage:
